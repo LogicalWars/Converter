@@ -2,17 +2,20 @@ package ru.netology;
 import java.io.*;
 import java.util.List;
 
+import static ru.netology.JSONParser.jsonToList;
+import static ru.netology.JSONParser.listToJson;
+
 public class Main {
     public static void main(String[] args) {
         String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
         String fileName = "data.csv";
         List<Employee> list = CSVParser.parseCSV(columnMapping, fileName, Employee.class);
         //TASK №1
-        writeString(JSONParser.listToJson(list, Employee.class), "data.json");
+        writeString(listToJson(list, Employee.class), "data.json");
         //TASK №2
-        writeString(JSONParser.listToJson(new XMLParser().parseXML("data.xml"), Employee.class), "data.json");
+        writeString(listToJson(new XMLParser().parseXML("data.xml"), Employee.class), "data.json");
         //TASK №3
-        JSONParser.jsonToList(readString("data.json"), Employee.class).forEach(System.out::println);
+        jsonToList(readString("data.json"), Employee.class).forEach(System.out::println);
 
     }
 
