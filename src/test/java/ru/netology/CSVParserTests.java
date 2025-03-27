@@ -13,7 +13,7 @@ import static ru.netology.CSVParser.parseCSV;
 public class CSVParserTests {
 
     private final String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
-    private final String fileName = "test.csv";
+    private final String fileName = "src\\test\\resources\\test.csv";
     List<Employee> listOfEmployee = List.of(
             new Employee(1, "John", "Smith", "USA", 25),
             new Employee(2, "Inav", "Petrov", "RU", 23));
@@ -40,7 +40,7 @@ public class CSVParserTests {
     void testParseCSVNotEmpty() {
         List<Employee> result = parseCSV(columnMapping, fileName, Employee.class);
         assertNotNull(result);
-        assertEquals(2, result.size());
+        assertEquals(listOfEmployee.size(), result.size());
     }
 
     //Проверка, что парсинг возвращает пустой массив, когда файл csv не имеет данные
