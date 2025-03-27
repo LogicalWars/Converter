@@ -105,11 +105,7 @@ public class XMLParserTests {
     void testParseXML() {
         List<Employee> result = new XMLParser().parseXML(fileName);
         for (int i = 0; i < listOfEmployee.size(); i++) {
-            assertEquals(listOfEmployee.get(i).getId(), result.get(i).getId());
-            assertEquals(listOfEmployee.get(i).getFirstName(), result.get(i).getFirstName());
-            assertEquals(listOfEmployee.get(i).getLastName(), result.get(i).getLastName());
-            assertEquals(listOfEmployee.get(i).getCountry(), result.get(i).getCountry());
-            assertEquals(listOfEmployee.get(i).getAge(), result.get(i).getAge());
+            assertEquals(listOfEmployee.get(i), result.get(i));
         }
     }
 }

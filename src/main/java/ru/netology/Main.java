@@ -2,6 +2,7 @@ package ru.netology;
 import java.io.*;
 import java.util.List;
 
+import static ru.netology.CSVParser.parseCSV;
 import static ru.netology.JSONParser.jsonToList;
 import static ru.netology.JSONParser.listToJson;
 
@@ -9,9 +10,8 @@ public class Main {
     static final String PATH = "src\\main\\resources\\";
     public static void main(String[] args) {
         String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
-        List<Employee> list = CSVParser.parseCSV(columnMapping, PATH+"data.csv", Employee.class);
         //TASK №1
-        writeString(listToJson(list, Employee.class), PATH+"data.json");
+        writeString(listToJson(parseCSV(columnMapping, PATH+"data.csv", Employee.class), Employee.class), PATH+"data.json");
         //TASK №2
         writeString(listToJson(new XMLParser().parseXML(PATH+"data.xml"), Employee.class), PATH+"data.json");
         //TASK №3
