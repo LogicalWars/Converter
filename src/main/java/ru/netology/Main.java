@@ -1,6 +1,7 @@
 package ru.netology;
 import java.io.*;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static ru.netology.CSVParser.parseCSV;
 import static ru.netology.JSONParser.jsonToList;
@@ -19,25 +20,17 @@ public class Main {
 
     }
 
-    public static void writeString(String text, String fileName){
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))){
-            bw.write(text);
+    public static void writeString(String text, String fileName) {
+        try {
+            Files.writeString(Path.of(fileName), text);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static String readString(String filename){
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))){
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-                sb.append("\n");
-            }
-            return sb.toString();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+    public static String readString(String filename) {
+        try {
+            return Files.readString(Path.of(filename));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
