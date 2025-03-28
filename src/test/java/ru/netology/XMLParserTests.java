@@ -1,5 +1,6 @@
 package ru.netology;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,62 +25,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class XMLParserTests {
     private final String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
-    private final String fileName = "src\\test\\resources\\test.xml";
+    private final String fileName = "src\\test\\resources\\data.xml";
+    private static final String fileNameToWrite = "src\\test\\resources\\test.json";
     List<Employee> listOfEmployee = List.of(
             new Employee(1, "John", "Smith", "USA", 25),
             new Employee(2, "Inav", "Petrov", "RU", 23));
 
-    //Создаем файл xml для теста
-    @BeforeEach
-    void createFileXML() throws IOException, ParserConfigurationException, TransformerException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.newDocument();
-
-        Element rootElement = doc.createElement("staff");
-        doc.appendChild(rootElement);
-
-        for (Employee employee : listOfEmployee) {
-            rootElement.appendChild(createEmployee(doc, employee.getId(), employee.getFirstName(), employee.getLastName(), employee.getCountry(), employee.getAge()));
-        }
-        // Записываем xml в файл
-        saveToXMLFile(doc);
-    }
-
-    private Element createEmployee(Document doc, long id, String firstName, String lastName, String country, int age) {
-        Element employee = doc.createElement("employee");
-
-        employee.appendChild(createElement(doc, columnMapping[0], String.valueOf(id)));
-        employee.appendChild(createElement(doc, columnMapping[1], firstName));
-        employee.appendChild(createElement(doc, columnMapping[2], lastName));
-        employee.appendChild(createElement(doc, columnMapping[3], country));
-        employee.appendChild(createElement(doc, columnMapping[4], String.valueOf(age)));
-
-        return employee;
-    }
-
-    private Element createElement(Document doc, String name, String value) {
-        Element element = doc.createElement(name);
-        element.appendChild(doc.createTextNode(value));
-        return element;
-    }
-
-    private void saveToXMLFile(Document doc) throws TransformerException {
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes"); // Красивый вывод
-
-        DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(new File(fileName));
-
-        transformer.transform(source, result);
-    }
-
-//  Удаляем файл xml для теста
-    @AfterEach
-    void deleteFileXML() throws IOException {
-        File file = new File(fileName);
+    @AfterAll
+    static void deleteTestFile() {
+        File file = new File(fileNameToWrite);
         if (file.exists()) file.delete();
     }
 
@@ -94,9 +48,9 @@ public class XMLParserTests {
     //Проверка, что парсинг выкидывает exception, когда файл xml не имеет данные
     @Test
     void testParseXMLEmpty() throws IOException {
-        FileWriter fw = new FileWriter(fileName, false);
+        FileWriter fw = new FileWriter(fileNameToWrite, false);
         fw.close();
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> new XMLParser().parseXML(fileName));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> new XMLParser().parseXML(fileNameToWrite));
         assertEquals("Ошибка при парсинге XML: Premature end of file.", exception.getMessage());
     }
 
