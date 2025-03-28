@@ -11,7 +11,6 @@ import static ru.netology.JSONParser.jsonToList;
 import static ru.netology.JSONParser.listToJson;
 public class JSONParserTests {
 
-    private final String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
     private final String fileName = "src\\test\\resources\\data.json";
     private static final String fileNameToWrite = "src\\test\\resources\\test.json";
     List<Employee> listOfEmployee = List.of(
